@@ -1,5 +1,8 @@
 package tz.ac.udsm;
 
+import org.springframework.stereotype.Component;
+
+
 public class MlangoWaChuma implements Mlango{
     @Override
     public void funga() {
