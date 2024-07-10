@@ -62,4 +62,9 @@ public class CategoryService {
 
     }
 
+    public Category findById(Long id) throws DataNotFoundException {
+        //Fetch existing category by id;
+        return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Category not found"));
+    }
+
 }

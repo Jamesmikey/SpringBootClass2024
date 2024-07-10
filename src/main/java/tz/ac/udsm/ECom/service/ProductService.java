@@ -47,7 +47,9 @@ public class ProductService {
 
         product.setExpiryDate(updateProduct.getExpiryDate());
 
-        product.setCategory(updateProduct.getCategory());
+        Category category=categoryRepository.findById(updateProduct.getCategory().getId()).orElseThrow(() -> new DataNotFoundException("Catgory not found"));
+
+        product.setCategory(category);
 
         repository.save(product);
     }
@@ -58,6 +60,11 @@ public class ProductService {
         Product product=repository.findById(id).orElseThrow(() -> new DataNotFoundException("Product not found"));
 
         repository.delete(product);
+    }
+
+    public Product findById(Long id) throws DataNotFoundException {
+        //Fetch existing category by id;
+        return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Product not found"));
     }
 
 }

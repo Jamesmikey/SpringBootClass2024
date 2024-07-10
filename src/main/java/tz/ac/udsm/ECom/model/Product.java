@@ -19,7 +19,7 @@ public class Product {
 
     private String expiryDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cat_id",nullable = false)
     private Category category;
     
