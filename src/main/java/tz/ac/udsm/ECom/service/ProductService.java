@@ -22,10 +22,6 @@ public class ProductService {
 
     public Product save(Product product) throws DataNotFoundException {
 
-        if(product.getCategory()==null){
-           throw new UnsupportedOperationException("Can not insert product without category");
-        }
-
         Category category=categoryRepository.findById(product.getCategory().getId()).orElseThrow(() -> new DataNotFoundException("Catgory not found"));
 
         product.setCategory(category);

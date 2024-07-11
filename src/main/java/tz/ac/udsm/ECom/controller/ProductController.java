@@ -57,7 +57,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public String edit(@PathVariable Long id, @RequestBody UpdateProductDTO updateProductDTO) throws DataNotFoundException {
+    public String edit(@PathVariable Long id, @RequestBody @Valid UpdateProductDTO updateProductDTO) throws DataNotFoundException {
 
         Product product=modelMapper.map(updateProductDTO,Product.class);
 

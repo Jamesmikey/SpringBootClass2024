@@ -1,5 +1,6 @@
 package tz.ac.udsm.ECom.controller;
 
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import tz.ac.udsm.ECom.dto.category.CategoryDetailDTO;
@@ -29,7 +30,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryDetailDTO save(@RequestBody CreateCategoryDTO categoryDTO){
+    public CategoryDetailDTO save(@RequestBody @Valid CreateCategoryDTO categoryDTO){
 
         Category category=modelMapper.map(categoryDTO,Category.class);
 
@@ -55,7 +56,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public String edit(@PathVariable  Long id,@RequestBody UpdateCategoryDTO updateCategoryDTO) throws DataNotFoundException {
+    public String edit(@PathVariable  Long id,@RequestBody @Valid UpdateCategoryDTO updateCategoryDTO) throws DataNotFoundException {
 
         Category category=modelMapper.map(updateCategoryDTO,Category.class);
 

@@ -1,6 +1,7 @@
 package tz.ac.udsm.ECom.dto.product;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -15,12 +16,13 @@ public class CreateProductDTO {
     @NotEmpty(message = "Must provide name")
     private String name;
 
-    @Max(value = 1000,message = "Can not exceed 1000")
+    @Max(value = 1000,message = "Price can not exceed 1000")
     private double price;
 
     private String expiryDate;
 
     @NotNull(message = "Must provide category")
+    @Valid
     private CategoryRefDTO category;
     
 }
