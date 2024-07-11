@@ -2,6 +2,8 @@ package tz.ac.udsm.ECom.controller;
 
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import tz.ac.udsm.ECom.dto.category.CategoryDetailDTO;
 import tz.ac.udsm.ECom.dto.category.CreateCategoryDTO;
@@ -38,21 +40,12 @@ public class CategoryController {
     }
 
     @GetMapping
-    public Iterable<FetchListCategoryDTO> findAll(){
+    public Iterable<FetchListCategoryDTO> findAll(Pageable pageable){
 
-        Iterable<Category> categories= service.findAll();
+        Page<Category> categories= service.findAll(pageable);
 
-        List<FetchListCategoryDTO> newList=new ArrayList<>();
+        return categories.map(category -> modelMapper.map(category, FetchListCategoryDTO.class));
 
-        for(Category category:categories){
-            newList.add(modelMapper.map(category,FetchListCategoryDTO.class));
-        }
-
-        return newList;
-
-//        Use stream
-
-//        return Stream.of(service.findAll()).map((cat)-> modelMapper.map(cat,FetchListCategoryDTO.class)).collect(Collectors.toList());
     }
 
     @PutMapping("/{id}")

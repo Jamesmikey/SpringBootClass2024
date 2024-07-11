@@ -1,9 +1,14 @@
 package tz.ac.udsm.ECom.service;
 
+import org.springframework.data.domain.Limit;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tz.ac.udsm.ECom.exception.DataNotFoundException;
 import tz.ac.udsm.ECom.model.Category;
 import tz.ac.udsm.ECom.repository.CategoryRepository;
+
+import java.util.List;
 
 @Service
 public class CategoryService {
@@ -15,8 +20,8 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public Iterable<Category> findAll() {
-        return repository.findAll();
+    public Page<Category> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Category save(Category category) {
