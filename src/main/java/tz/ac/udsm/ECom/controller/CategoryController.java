@@ -40,9 +40,9 @@ public class CategoryController {
     }
 
     @GetMapping
-    public Iterable<FetchListCategoryDTO> findAll(Pageable pageable){
+    public Iterable<FetchListCategoryDTO> findAll(@RequestParam(required = false,defaultValue = "0") int pageNumber,@RequestParam(required = false,defaultValue = "2000000") int pageSize,@RequestParam(required = false,defaultValue = "name") String sortBy,@RequestParam(required = false,defaultValue = "true") boolean asc){
 
-        Page<Category> categories= service.findAll(pageable);
+        Page<Category> categories= service.findAll(pageNumber,pageSize,sortBy,asc);
 
         return categories.map(category -> modelMapper.map(category, FetchListCategoryDTO.class));
 

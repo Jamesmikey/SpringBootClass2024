@@ -1,8 +1,6 @@
 package tz.ac.udsm.ECom.service;
 
-import org.springframework.data.domain.Limit;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import tz.ac.udsm.ECom.exception.DataNotFoundException;
 import tz.ac.udsm.ECom.model.Category;
@@ -20,7 +18,8 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public Page<Category> findAll(Pageable pageable) {
+    public Page<Category> findAll(int pageNumber,int pageSize,String sortBy,boolean asc) {
+        Pageable pageable= PageRequest.of(pageNumber,pageSize, asc?Sort.by(sortBy).ascending():Sort.by(sortBy).descending());
         return repository.findAll(pageable);
     }
 
