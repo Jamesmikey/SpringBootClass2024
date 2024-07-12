@@ -18,9 +18,8 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public Page<Category> findAll(int pageNumber,int pageSize,String sortBy,boolean asc) {
-        Pageable pageable= PageRequest.of(pageNumber,pageSize, asc?Sort.by(sortBy).ascending():Sort.by(sortBy).descending());
-        return repository.findAll(pageable);
+    public Page<Category> findAll(String name,Pageable pageable) {
+        return repository.searchAllByName(name,pageable);
     }
 
     public Category save(Category category) {
