@@ -19,7 +19,7 @@ public class CategoryService {
     }
 
     public Page<Category> findAll(String name,Pageable pageable) {
-        return repository.searchAllByName(name,pageable);
+        return repository.findAllByName(name,pageable);
     }
 
     public Category save(Category category) {

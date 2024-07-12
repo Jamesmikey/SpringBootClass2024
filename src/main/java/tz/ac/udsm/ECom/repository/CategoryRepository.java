@@ -14,7 +14,10 @@ import java.util.List;
 
 public interface CategoryRepository extends ListPagingAndSortingRepository<Category,Long>, CrudRepository<Category,Long> {
 
-    @Query(value = "SELECT  * from categories where name=:name",nativeQuery = true)
-    Page<Category> searchAllByName(@Param("name") String name, Pageable pageable);
+    Page<Category> findAllByName(String name, Pageable pageable);
+
+    boolean existsByName(String name);
+
+
 
 }
