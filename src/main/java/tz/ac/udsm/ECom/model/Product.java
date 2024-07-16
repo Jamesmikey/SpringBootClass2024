@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "products")
 @Data
@@ -22,5 +24,8 @@ public class Product {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cat_id",nullable = false)
     private Category category;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderLine> orderLines;
     
 }

@@ -15,14 +15,16 @@ public class Order {
     private Long id;
 
 
-    @ManyToMany
-    @JoinTable(name = "order_products",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
+//    @ManyToMany
+//    @JoinTable(name = "order_products",
+//            joinColumns = @JoinColumn(name = "order_id"),
+//            inverseJoinColumns = @JoinColumn(name = "product_id"))
+//    private List<Product> products;
 
-    @OneToOne
-    @JoinColumn(name = "payment_id",nullable = true)
+    @OneToMany(mappedBy = "order")
+    private List<OrderLine> orderLines;
+
+    @OneToOne(mappedBy = "order",fetch = FetchType.LAZY)
     private Payment payment;
 
     @ManyToOne

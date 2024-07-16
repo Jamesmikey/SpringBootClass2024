@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import tz.ac.udsm.ECom.exception.DataNotFoundException;
 import tz.ac.udsm.ECom.exception.InvalidAmountException;
 import tz.ac.udsm.ECom.model.Order;
+import tz.ac.udsm.ECom.model.OrderLine;
 import tz.ac.udsm.ECom.model.Payment;
 import tz.ac.udsm.ECom.model.Product;
 import tz.ac.udsm.ECom.repository.OrderRepository;
@@ -29,17 +30,18 @@ public class PaymentService {
 
         Order order = orderRepository.findById(payment.getOrder().getId()).orElseThrow(() -> new DataNotFoundException("Order not found"));
 
-        double dueAMount=0;
-        for(Product product:order.getProducts()){
-            dueAMount=dueAMount+product.getPrice();
+        double total=0;
+        for(OrderLine orderLine:order.getOrderLines()){
+            total=(orderLine.getPrice()* orderLine.getQuantity())+total;
         }
 
         //Check amount to pay
-        if(payment.getAmount()<dueAMount){
-            throw new InvalidAmountException("Amount provided is less than required");
+        if(payment.getAmount()<total){
+            throw new InvalidAmountException("Amount provided is less than required: "+total);
         }
 
         return repository.save(payment);
+
     }
 
     public Page<Payment> findAll(Pageable pageable){

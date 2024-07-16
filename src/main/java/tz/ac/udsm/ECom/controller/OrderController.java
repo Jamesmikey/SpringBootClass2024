@@ -9,9 +9,11 @@ import tz.ac.udsm.ECom.dto.order.CreateOrderDTO;
 import tz.ac.udsm.ECom.dto.order.FetchListOrderDTO;
 import tz.ac.udsm.ECom.dto.order.OrderDetailDTO;
 import tz.ac.udsm.ECom.dto.order.UpdateOrderDTO;
+import tz.ac.udsm.ECom.dto.orderLine.FetchListOrderLineDTO;
 import tz.ac.udsm.ECom.dto.product.FetchListProductDTO;
 import tz.ac.udsm.ECom.exception.DataNotFoundException;
 import tz.ac.udsm.ECom.model.Order;
+import tz.ac.udsm.ECom.model.OrderLine;
 import tz.ac.udsm.ECom.model.Product;
 import tz.ac.udsm.ECom.service.OrderService;
 
@@ -49,12 +51,12 @@ public class OrderController {
 
     }
 
-    @GetMapping("/{id}/products")
-    public List<FetchListProductDTO> findAllProducts(@PathVariable Long id) throws DataNotFoundException {
+    @GetMapping("/{id}/orderLines")
+    public List<FetchListOrderLineDTO> findAllOrderLines(@PathVariable Long id) throws DataNotFoundException {
 
-        List<Product> products= service.findAllProducts(id);
+        List<OrderLine> orderLines= service.findAllOrderLines(id);
 
-        return products.stream().map(product -> modelMapper.map(product, FetchListProductDTO.class)).collect(Collectors.toList());
+        return orderLines.stream().map(product -> modelMapper.map(product, FetchListOrderLineDTO.class)).collect(Collectors.toList());
 
     }
 

@@ -12,7 +12,9 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "payment",fetch = FetchType.LAZY)
+
+    @OneToOne
+    @JoinColumn(name = "order_id",nullable = true)
     private Order order;
 
 

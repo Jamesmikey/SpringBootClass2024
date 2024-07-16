@@ -5,15 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tz.ac.udsm.ECom.exception.DataNotFoundException;
-import tz.ac.udsm.ECom.model.Category;
-import tz.ac.udsm.ECom.model.Order;
-import tz.ac.udsm.ECom.model.Product;
-import tz.ac.udsm.ECom.model.User;
+import tz.ac.udsm.ECom.model.*;
+import tz.ac.udsm.ECom.repository.OrderLineRepository;
 import tz.ac.udsm.ECom.repository.OrderRepository;
 import tz.ac.udsm.ECom.repository.ProductRepository;
 import tz.ac.udsm.ECom.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,11 +23,15 @@ public class OrderService {
 
     private final ProductRepository productRepository;
 
-    public OrderService(OrderRepository repository, UserRepository userRepository, ProductRepository productRepository) {
+    private final OrderLineRepository orderLineRepository;
+
+    public OrderService(OrderRepository repository, UserRepository userRepository, ProductRepository productRepository, OrderLineRepository orderLineRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.orderLineRepository = orderLineRepository;
     }
+
 
 
     @Transactional
@@ -41,16 +42,20 @@ public class OrderService {
 
         order.setCustomer(customer);
 
+        Order savedOrder= repository.save(order);
+
         //Check products if exists in the database
-        List<Product> dbProducts=new ArrayList<>();
-        for(Product product:order.getProducts()){
-            Product dbProduct=productRepository.findById(product.getId()).orElseThrow(() -> new DataNotFoundException("Product with ID "+product.getId()+" not found"));
-            dbProducts.add(dbProduct);
+        for(OrderLine orderLine:order.getOrderLines()){
+            Product dbProduct=productRepository.findById(orderLine.getProduct().getId()).orElseThrow(() -> new DataNotFoundException("Product with ID "+orderLine.getProduct().getId()+" not found"));
+            orderLine.setPrice(dbProduct.getPrice());
+            orderLine.setProduct(dbProduct);
+            orderLine.setOrder(savedOrder);
         }
 
-        order.setProducts(dbProducts);
+        orderLineRepository.saveAll(order.getOrderLines());
 
-        return repository.save(order);
+        return savedOrder;
+
     }
 
     public Page<Order> findAll(Pageable pageable){
@@ -62,13 +67,13 @@ public class OrderService {
         Order order=repository.findById(id).orElseThrow(() -> new DataNotFoundException("Order not found"));
 
         //Check products if exists in the database
-        List<Product> dbProducts=new ArrayList<>();
-        for(Product product:order.getProducts()){
-            Product dbProduct=productRepository.findById(product.getId()).orElseThrow(() -> new DataNotFoundException("Product with ID "+product.getId()+" not found"));
-            dbProducts.add(dbProduct);
-        }
-
-        order.setProducts(dbProducts);
+//        List<Product> dbProducts=new ArrayList<>();
+//        for(Product product:order.getProducts()){
+//            Product dbProduct=productRepository.findById(product.getId()).orElseThrow(() -> new DataNotFoundException("Product with ID "+product.getId()+" not found"));
+//            dbProducts.add(dbProduct);
+//        }
+//
+//        order.setProducts(dbProducts);
 
         repository.save(order);
     }
@@ -86,11 +91,11 @@ public class OrderService {
         return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Order not found"));
     }
 
-    public List<Product> findAllProducts(Long id) throws DataNotFoundException {
+    public List<OrderLine> findAllOrderLines(Long id) throws DataNotFoundException {
         //Fetch existing category by id;
         Order order = repository.findById(id).orElseThrow(()->new DataNotFoundException("Order not found"));
 
-        return order.getProducts();
+        return order.getOrderLines();
 
     }
 
