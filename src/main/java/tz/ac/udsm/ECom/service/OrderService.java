@@ -1,5 +1,7 @@
 package tz.ac.udsm.ECom.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tz.ac.udsm.ECom.exception.DataNotFoundException;
@@ -51,8 +53,8 @@ public class OrderService {
         return repository.save(order);
     }
 
-    public Iterable<Order> findAll(){
-        return repository.findAll();
+    public Page<Order> findAll(Pageable pageable){
+        return repository.findAll(pageable);
     }
 
     public void update(Long id, Order updateOrder) throws DataNotFoundException {
@@ -82,6 +84,14 @@ public class OrderService {
     public Order findById(Long id) throws DataNotFoundException {
         //Fetch existing category by id;
         return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Order not found"));
+    }
+
+    public List<Product> findAllProducts(Long id) throws DataNotFoundException {
+        //Fetch existing category by id;
+        Order order = repository.findById(id).orElseThrow(()->new DataNotFoundException("Order not found"));
+
+        return order.getProducts();
+
     }
 
 }

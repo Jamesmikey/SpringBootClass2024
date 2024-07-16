@@ -2,6 +2,8 @@ package tz.ac.udsm.ECom.controller;
 
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import tz.ac.udsm.ECom.dto.category.CategoryDetailDTO;
 import tz.ac.udsm.ECom.dto.category.FetchListCategoryDTO;
@@ -42,18 +44,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public Iterable<FetchListProductDTO> findAll(){
+    public Page<FetchListProductDTO> findAll(Pageable pageable){
 
-        Iterable<Product> products= service.findAll();
+        Page<Product> products= service.findAll(pageable);
 
-        List<FetchListProductDTO> newList=new ArrayList<>();
+        return products.map(category -> modelMapper.map(category, FetchListProductDTO.class));
 
-        for(Product product:products){
-            newList.add(modelMapper.map(product,FetchListProductDTO.class));
-        }
-
-        return newList;
-//        return Stream.of(service.findAll()).map((p)-> modelMapper.map(p,FetchListProductDTO.class)).collect(Collectors.toList());
     }
 
     @PutMapping("/{id}")

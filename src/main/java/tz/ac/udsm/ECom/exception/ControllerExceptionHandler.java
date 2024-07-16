@@ -23,6 +23,16 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(messageDTO, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(value = InvalidAmountException.class)
+    public ResponseEntity<MessageDTO> handleInvalidAmountException(InvalidAmountException exception){
+        MessageDTO messageDTO =new MessageDTO();
+        messageDTO.setMessage(exception.getMessage());
+        messageDTO.setStatus(false);
+        messageDTO.setStatus(false);
+        return new ResponseEntity<>(messageDTO, HttpStatus.BAD_REQUEST);
+    }
+
+
     @ExceptionHandler(value = OperationNotSupportedException.class)
     public ResponseEntity<MessageDTO> handleOperationNotSupportedException(OperationNotSupportedException exception){
         MessageDTO messageDTO =new MessageDTO();

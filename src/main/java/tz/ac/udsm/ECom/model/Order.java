@@ -22,7 +22,7 @@ public class Order {
     private List<Product> products;
 
     @OneToOne
-    @JoinColumn(name = "payment_id")
+    @JoinColumn(name = "payment_id",nullable = true)
     private Payment payment;
 
     @ManyToOne

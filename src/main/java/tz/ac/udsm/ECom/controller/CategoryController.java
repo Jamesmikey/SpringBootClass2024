@@ -9,8 +9,10 @@ import tz.ac.udsm.ECom.dto.category.CategoryDetailDTO;
 import tz.ac.udsm.ECom.dto.category.CreateCategoryDTO;
 import tz.ac.udsm.ECom.dto.category.FetchListCategoryDTO;
 import tz.ac.udsm.ECom.dto.category.UpdateCategoryDTO;
+import tz.ac.udsm.ECom.dto.product.FetchListProductDTO;
 import tz.ac.udsm.ECom.exception.DataNotFoundException;
 import tz.ac.udsm.ECom.model.Category;
+import tz.ac.udsm.ECom.model.Product;
 import tz.ac.udsm.ECom.service.CategoryService;
 
 import java.util.ArrayList;
@@ -45,6 +47,15 @@ public class CategoryController {
         Page<Category> categories= service.findAll(name,pageable);
 
         return categories.map(category -> modelMapper.map(category, FetchListCategoryDTO.class));
+
+    }
+
+    @GetMapping("/{id}/products")
+    public List<FetchListProductDTO> findAllProducts(@PathVariable Long id) throws DataNotFoundException {
+
+        List<Product> products= service.findAllProducts(id);
+
+        return products.stream().map(product -> modelMapper.map(product, FetchListProductDTO.class)).collect(Collectors.toList());
 
     }
 

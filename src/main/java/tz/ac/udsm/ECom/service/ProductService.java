@@ -1,5 +1,7 @@
 package tz.ac.udsm.ECom.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tz.ac.udsm.ECom.exception.DataNotFoundException;
 import tz.ac.udsm.ECom.model.Category;
@@ -29,8 +31,8 @@ public class ProductService {
         return repository.save(product);
     }
 
-    public Iterable<Product> findAll(){
-        return repository.findAll();
+    public Page<Product> findAll(Pageable pageable){
+        return repository.findAll(pageable);
     }
 
     public void update(Long id, Product updateProduct) throws DataNotFoundException {

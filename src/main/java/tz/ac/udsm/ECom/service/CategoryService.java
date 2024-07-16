@@ -4,6 +4,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import tz.ac.udsm.ECom.exception.DataNotFoundException;
 import tz.ac.udsm.ECom.model.Category;
+import tz.ac.udsm.ECom.model.Product;
 import tz.ac.udsm.ECom.repository.CategoryRepository;
 
 import java.util.List;
@@ -21,6 +22,15 @@ public class CategoryService {
     public Page<Category> findAll(String name,Pageable pageable) {
         return repository.findAllByName(name,pageable);
     }
+
+    public List<Product> findAllProducts(Long id) throws DataNotFoundException {
+        //Fetch existing category by id;
+        Category category = repository.findById(id).orElseThrow(()->new DataNotFoundException("Category not found"));
+
+        return category.getProducts();
+
+    }
+
 
     public Category save(Category category) {
         return repository.save(category);

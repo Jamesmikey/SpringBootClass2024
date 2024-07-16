@@ -12,5 +12,11 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne(mappedBy = "payment",fetch = FetchType.LAZY)
+    private Order order;
+
+
+    private double amount;
+
 
 }
