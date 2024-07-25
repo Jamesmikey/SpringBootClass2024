@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tz.ac.udsm.ECom.dto.user.CreateUserDTO;
 import tz.ac.udsm.ECom.dto.user.FetchListUserDTO;

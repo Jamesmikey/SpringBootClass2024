@@ -6,6 +6,10 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import tz.ac.udsm.ECom.dto.category.CategoryRefDTO;
+import tz.ac.udsm.ECom.dto.role.RoleRefDTO;
+import tz.ac.udsm.ECom.model.Role;
+
+import java.util.List;
 
 
 @Data
@@ -20,5 +24,7 @@ public class UpdateUserDTO {
     @NotEmpty(message = "Must provide email")
     private String email;
 
+    @NotEmpty(message = "Must have at least one role")
+    private List<RoleRefDTO> roles;
 
 }

@@ -3,9 +3,11 @@ package tz.ac.udsm.ECom.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import tz.ac.udsm.ECom.enums.UserType;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,12 +30,28 @@ public class User implements UserDetails {
 
     private UserType type;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+        @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
+
     @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
     private List<Order> orders;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+
+        List<GrantedAuthority> authorities=new ArrayList<>();
+
+        for (Role role:roles){
+
+            SimpleGrantedAuthority simpleGrantedAuthority=new SimpleGrantedAuthority(role.getName());
+
+            authorities.add(simpleGrantedAuthority);
+        }
+
+        return authorities;
     }
 
     @Override

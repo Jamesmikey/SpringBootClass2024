@@ -6,7 +6,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import tz.ac.udsm.ECom.dto.category.CategoryRefDTO;
+import tz.ac.udsm.ECom.dto.role.RoleRefDTO;
 import tz.ac.udsm.ECom.enums.UserType;
+import tz.ac.udsm.ECom.model.Role;
+
+import java.util.List;
 
 
 @Data
@@ -25,4 +29,7 @@ public class CreateUserDTO {
     private String password;
 
     private UserType type=UserType.NORMAL_USER;
+
+    @NotEmpty(message = "Must have at least one role")
+    private List<RoleRefDTO> roles;
 }
