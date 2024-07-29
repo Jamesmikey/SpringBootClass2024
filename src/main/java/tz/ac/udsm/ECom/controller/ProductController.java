@@ -38,6 +38,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ProductDetailDTO create(@RequestBody @Valid CreateProductDTO createProductDTO) throws DataNotFoundException {
 
         Product product=modelMapper.map(createProductDTO,Product.class);
@@ -57,6 +58,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String edit(@PathVariable Long id, @RequestBody @Valid UpdateProductDTO updateProductDTO) throws DataNotFoundException {
 
         Product product=modelMapper.map(updateProductDTO,Product.class);
@@ -67,12 +69,14 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SUPER-ADMIN')")
     public String delete(@PathVariable Long id) throws DataNotFoundException {
        service.delete(id);
        return "Product deleted successfully";
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ProductDetailDTO findOne(@PathVariable Long id) throws DataNotFoundException {
         return modelMapper.map(service.findById(id),ProductDetailDTO.class);
     }

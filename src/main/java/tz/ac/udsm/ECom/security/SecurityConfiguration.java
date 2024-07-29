@@ -33,7 +33,6 @@ public class SecurityConfiguration {
         });
         http.authorizeHttpRequests(authorization -> {
             authorization.requestMatchers("/categories", "/users").permitAll().
-
                     anyRequest().authenticated();
         });
         http.httpBasic(Customizer.withDefaults());
