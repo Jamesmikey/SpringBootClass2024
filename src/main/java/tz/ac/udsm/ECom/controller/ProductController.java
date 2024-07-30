@@ -48,7 +48,7 @@ public class ProductController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<FetchListProductDTO> findAll(Pageable pageable){
 
         Page<Product> products= service.findAll(pageable);

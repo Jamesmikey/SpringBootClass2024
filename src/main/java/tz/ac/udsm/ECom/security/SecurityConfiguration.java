@@ -1,8 +1,8 @@
 package tz.ac.udsm.ECom.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,11 +14,27 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
+
+
+    public JwtAuthenticationFilter jwtAuthenticationFilter;
+
+
+    @Bean
+    public JwtAuthenticationFilter getAuthenticationFilter(UserDetailsService userDetailsService,JwtService jwtService,HandlerExceptionResolver handlerExceptionResolver){
+       JwtAuthenticationFilter jwtAuthenticationFilter=new JwtAuthenticationFilter(jwtService,userDetailsService,handlerExceptionResolver);
+       this.jwtAuthenticationFilter=jwtAuthenticationFilter;
+       return jwtAuthenticationFilter;
+    }
+
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -32,10 +48,11 @@ public class SecurityConfiguration {
             csrfConfigurer.disable();
         });
         http.authorizeHttpRequests(authorization -> {
-            authorization.requestMatchers("/categories", "/users").permitAll().
+            authorization.requestMatchers("/categories", "/users","/auth/login").permitAll().
                     anyRequest().authenticated();
         });
         http.httpBasic(Customizer.withDefaults());
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
