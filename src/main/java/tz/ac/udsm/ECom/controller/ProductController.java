@@ -1,5 +1,8 @@
 package tz.ac.udsm.ECom.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -25,6 +28,8 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/products")
+@SecurityRequirement(name = "Bearer Authentication")
+@Tag(name = "Product Controller", description = "Manage Products")
 public class ProductController {
 
 
@@ -39,6 +44,7 @@ public class ProductController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Operation(summary = "Create new product", description = "")
     public ProductDetailDTO create(@RequestBody @Valid CreateProductDTO createProductDTO) throws DataNotFoundException {
 
         Product product=modelMapper.map(createProductDTO,Product.class);

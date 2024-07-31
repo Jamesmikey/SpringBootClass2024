@@ -48,7 +48,7 @@ public class SecurityConfiguration {
             csrfConfigurer.disable();
         });
         http.authorizeHttpRequests(authorization -> {
-            authorization.requestMatchers("/categories", "/users","/auth/login").permitAll().
+            authorization.requestMatchers("/categories", "/users","/auth/login","/v3/api-docs/**","/swagger-ui/**").permitAll().
                     anyRequest().authenticated();
         });
         http.httpBasic(Customizer.withDefaults());
